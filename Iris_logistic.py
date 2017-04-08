@@ -17,8 +17,8 @@ def main():
 
     #require the fourth column value (target)                                             
     y=df.iloc[0:100, 4].values
-    #assign the label of sentosa 0, and virginica is 1                                   
-    y=np.where(y=='Iris-setosa', 0, 1)
+    #assign the label of sentosa -1, and virginica is 1                                   
+    y=np.where(y=='Iris-setosa', -1, 1)
     #require first 100 row of column 1,3
     X=df.iloc[0:100, [0,2]].values
 
