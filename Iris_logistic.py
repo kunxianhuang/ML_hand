@@ -5,8 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 import pandas as pd
-from LinearRegression import LinearRegression
-
+#from LinearRegression import LinearRegression
+from LogisticRegression import LogisticRegression
 
 def main():
     df = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris\
