@@ -31,6 +31,9 @@ class LinearRegression(object):
             self.error_.append(self._get_error(X,y))
             self._update_weights(X,y)
 
+            if i_trai % 100 ==0:
+                print("Epopch {}, E_in is {}".format(i_trai+1,self.error_[-1]))
+
         return self.error_
 
     #initialize the weighting vector with random number (-1,1)
