@@ -1,5 +1,5 @@
 #!/bin/env python3
-#*-*coding=utf-8*-*
+#-*- coding=utf-8 -*-
 
 import numpy as np
 from scipy.special import expit
@@ -33,15 +33,14 @@ class LinearRegression(object):
 
         return self.error_
 
-            
     #initialize the weighting vector with random number (-1,1)
     #dimension of weighting vector is n_features+1 (w0....wd)
     def _initialize_weights(self):
         return np.random.uniform(-1.0,1.0, size=self.n_features+1)
-
+    """
     def _sigmoid(self,z):
         return expit(z) #sigmoid function
-
+    """
     #shuffle the data
     def _shuffle(self, X, y):
         r=np.random.permutation(len(y))
@@ -52,14 +51,14 @@ class LinearRegression(object):
         wx_=self.net_input(X)
         zi=[]
         for wxi, yi in zip(wx_,y):
-            zi.append(-wxi*yi)
-        #put in sigmoid function result
-        net_sig=self._sigmoid(np.array(zi))
+            zi.append(yi-wxi) #(y_true-y_pred)
+        #change to array
+        net_sig=np.array(zi)
         net_yx=[]
         net_y=[]
         for Xi, yi, sigi in zip(X,y, net_sig):
-            net_yx.append(-yi*Xi*sigi)
-            net_y.append(-yi*sigi)
+            net_yx.append(-2.0*Xi*sigi)
+            net_y.append(-2.0*sigi)
 
         net_yx = np.array(net_yx)
         net_y  = np.array(net_y)
@@ -73,7 +72,7 @@ class LinearRegression(object):
         wx_=self.net_input(X)
         Ein_p=[]
         for wxi, yi in zip(wx_,y):
-            Ein_p.append(np.log(1+np.exp(-wxi*yi)))
+            Ein_p.append(np.square(wx-y))
             
         return (1.0/n_samples)*np.sum(np.array(Ein_p))
 
@@ -85,4 +84,4 @@ class LinearRegression(object):
     def predict(self, X):
         #return sigmoid function of wx
         z=self.net_input(X)
-        return np.where(self._sigmoid(z)>=0.5,1,0)
+        return z
