@@ -72,7 +72,7 @@ class LinearRegression(object):
         wx_=self.net_input(X)
         Ein_p=[]
         for wxi, yi in zip(wx_,y):
-            Ein_p.append(np.square(wx-y))
+            Ein_p.append(np.square(wxi-y))
             
         return (1.0/n_samples)*np.sum(np.array(Ein_p))
 
