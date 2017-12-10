@@ -77,8 +77,8 @@ class LogisticRegression(object):
     #obtain the Ein for each step (MSE)
     def _get_error(self, X, y):
         n_samples=X.shape[0]
-        wx_=self.net_input(X)
-        Ein_p=np.square(np.subtract(wx_,y))
+        pre_=self.predict(X)        
+        Ein_p=np.square(np.subtract(pre_,y))
         return (1.0/n_samples)*np.sum(np.array(Ein_p))
 
 
