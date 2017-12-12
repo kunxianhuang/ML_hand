@@ -25,7 +25,6 @@ class LogisticRegression(object):
         if (self.w_initialized==False):
             self.w_=self._initialize_weights()
         self.error_=[]
-        self.stopstep
         self.stopstep = 0
         #loop for training
         for i_trai in range(self.epochs):
@@ -37,6 +36,8 @@ class LogisticRegression(object):
                 X,y = self._shuffle(X,y)
 
             self.error_.append(self._get_error(X,y))
+            #if i_trai % 500 ==0:
+            #    print("Epoch {}, E_in is {}".format(i_trai+1,self.error_[-1]))
             #set early stop here                                                              
             if i_trai>50:
                 if (self.error_[-1]>self.error_[-2]):
@@ -63,17 +64,16 @@ class LogisticRegression(object):
         n_samples=X.shape[0]
         #put in sigmoid function result
         wx_=self._sigmoid(self.net_input(X))
-        
-    
+            
         net_sig = np.subtract(y,wx_)
         
-        gra = -2.0*np.dot(np.transpose(X),net_sig)+(2.0*self.L2*self.w_[1:])
-        grab = -2.0*np.sum(net_sig)
+        gra = -1.0*np.dot(np.transpose(X),net_sig)+(2.0*self.L2*self.w_[1:])
+        grab = -1.0*np.sum(net_sig)
         
         self.w_[1:] += self.eta*(-1.0/n_samples)*gra
         self.w_[0] += self.eta*(-1.0/n_samples)*grab
         
-    
+        """
     #obtain the Ein for each step (MSE)
     def _get_error(self, X, y):
         n_samples=X.shape[0]
@@ -81,7 +81,17 @@ class LogisticRegression(object):
         Ein_p=np.square(np.subtract(pre_,y))
         return (1.0/n_samples)*np.sum(np.array(Ein_p))
 
-
+    """
+    #obtain the Ein for each step (cross-entropy)
+    def _get_error(self, X, y):
+        n_samples=X.shape[0]
+        wx_=self._sigmoid(self.net_input(X))
+        #wx_=self.net_input(X)
+        #print("shape of wx_ is {}".format(wx_.shape))
+        #Ein_p = np.log(1+np.exp(-1*np.multiply(wx_, y))) #element wise multiply
+        Ein_p = -1*(np.multiply(y,np.log(wx_))+np.multiply(1-y, np.log(1-wx_)))
+        return (1.0/n_samples)*np.sum(Ein_p)
+    
     #return wx
     def net_input(self, X):
         return np.dot(X, self.w_[1:])+self.w_[0]
