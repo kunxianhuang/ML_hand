@@ -10,6 +10,7 @@ class LogisticRegression(object):
     #initialize
     def __init__(self,epochs=500,eta=0.001, shuffle=True,random_state=None,earlystop=150, L2=0.001):
         np.random.seed(random_state)
+        
         self.epochs = epochs
         self.eta = eta
         self.shuffle = shuffle
